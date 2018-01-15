@@ -1,11 +1,9 @@
 module View exposing (..)
 
-import Html exposing (Html, div, text)
-import Models exposing (Model, PlayerId)
-import Models exposing (Model)
+import Html exposing (Html, div, text, ul, li, a)
+import Html.Attributes exposing (class, href)
+import Models exposing (..)
 import Msgs exposing (Msg)
-import Players.Edit
-import Players.List
 import RemoteData
 
 
@@ -18,42 +16,48 @@ view model =
 page : Model -> Html Msg
 page model =
     case model.route of
-        Models.PlayersRoute ->
-            Players.List.view model.players
+        Models.HomeRoute ->
+            div [] [ mainMenu ]
 
-        Models.PlayerRoute id ->
-            playerEditPage model id
+        Models.TonguesRoute ->
+            div [] [ tonguesList model.tongues ]
+
+        Models.TongueRoute id ->
+            notFoundView
+
+        Models.CoursesRoute ->
+            notFoundView
+
+        Models.CourseRoute id ->
+            notFoundView
 
         Models.NotFoundRoute ->
             notFoundView
 
+mainMenu: Html msg
+mainMenu =
+    ul []
+        [ li [] [ a [ href "#tongues" ] [ text "tongues" ] ]
+        , li [] [ a [ href "#courses" ] [ text "courses" ] ]
+        ]
 
-playerEditPage : Model -> PlayerId -> Html Msg
-playerEditPage model playerId =
-    case model.players of
+tonguesList: RemoteData.WebData (List String) -> Html msg
+tonguesList tongues =
+    case tongues of
         RemoteData.NotAsked ->
-            text ""
+            text "?"
 
         RemoteData.Loading ->
-            text "Loading ..."
+            text "Loading"
 
-        RemoteData.Success players ->
-            let
-                maybePlayer =
-                    players
-                        |> List.filter (\player -> player.id == playerId)
-                        |> List.head
-            in
-                case maybePlayer of
-                    Just player ->
-                        Players.Edit.view player
+        RemoteData.Success data ->
+            div []
+                [ text "Data"
+                , div [] (List.map (\t -> text (t ++ " ")) data)
+                ]
 
-                    Nothing ->
-                        notFoundView
-
-        RemoteData.Failure err ->
-            text (toString err)
-
+        RemoteData.Failure error->
+            text ("Error" ++ toString error)
 
 notFoundView : Html msg
 notFoundView =
