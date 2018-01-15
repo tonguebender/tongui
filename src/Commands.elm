@@ -20,7 +20,7 @@ fetchTonguesUrl : String
 fetchTonguesUrl =
     "http://localhost:4000/tongues"
 
-tonguesDecoder : Decode.Decoder (List String)
+tonguesDecoder : Decode.Decoder (List Models.TongueId)
 tonguesDecoder =
     Decode.list Decode.string
 

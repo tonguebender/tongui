@@ -1,14 +1,14 @@
 module Msgs exposing (..)
 
 import Http
-import Models exposing (Tongue)
+import Models exposing (TongueId)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)
 
 
 
 type Msg
-    = OnFetchTongues (WebData (List String))
+    = OnFetchTongues (WebData (List TongueId))
     | OnLocationChange Location
 
 

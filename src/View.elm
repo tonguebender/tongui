@@ -41,7 +41,7 @@ mainMenu =
         , li [] [ a [ href "#courses" ] [ text "courses" ] ]
         ]
 
-tonguesList: RemoteData.WebData (List String) -> Html msg
+tonguesList: RemoteData.WebData (List TongueId) -> Html msg
 tonguesList tongues =
     case tongues of
         RemoteData.NotAsked ->

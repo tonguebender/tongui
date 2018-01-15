@@ -5,7 +5,7 @@ import RemoteData exposing (WebData)
 
 type alias Model =
     { route : Route
-    , tongues : WebData (List String)
+    , tongues : WebData (List TongueId)
     }
 
 
@@ -16,8 +16,7 @@ initialModel route =
     }
 
 type alias Tongue =
-    {
-        id : TongueId
+    { id: TongueId
     }
 
 type alias TongueId =
