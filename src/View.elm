@@ -1,7 +1,8 @@
 module View exposing (..)
 
-import Html exposing (Html, div, text, ul, li, a)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, div, text, ul, li, a, form, input, textarea, button)
+import Html.Attributes exposing (class, href, name)
+import Html.Events exposing (onInput)
 import Models exposing (..)
 import Msgs exposing (Msg)
 import RemoteData
@@ -23,7 +24,7 @@ page model =
             div [] [ tonguesList model.tongues ]
 
         Models.TongueRoute id ->
-            notFoundView
+            tongueForm id
 
         Models.CoursesRoute ->
             notFoundView
@@ -37,8 +38,8 @@ page model =
 mainMenu: Html msg
 mainMenu =
     ul []
-        [ li [] [ a [ href "#tongues" ] [ text "tongues" ] ]
-        , li [] [ a [ href "#courses" ] [ text "courses" ] ]
+        [ li [] [ simpleLink "tongues" "tongues" ]
+        , li [] [ simpleLink "courses" "courses" ]
         ]
 
 tonguesList: RemoteData.WebData (List TongueId) -> Html msg
@@ -53,11 +54,32 @@ tonguesList tongues =
         RemoteData.Success data ->
             div []
                 [ text "Data"
-                , div [] (List.map (\t -> text (t ++ " ")) data)
+                , div [] (List.map (\t -> simpleLink ("tongue/" ++ t) t) data)
                 ]
 
         RemoteData.Failure error->
             text ("Error" ++ toString error)
+
+tongueForm: String -> Html Msg
+tongueForm id =
+    form []
+        [ div []
+            [ text "id"
+            , input [ name "id", onInput Msgs.OnInputId ] []
+            ]
+        , div []
+            [ text "definitions"
+            , textarea [ name "definitions", onInput Msgs.OnInputDesc ] []
+            ]
+        , div []
+            [ button [] [ text "add" ]
+            ]
+        ]
+
+
+simpleLink: String -> String -> Html msg
+simpleLink hrefVal textVal =
+    a [ href ("#" ++ hrefVal) ] [ text textVal ]
 
 notFoundView : Html msg
 notFoundView =

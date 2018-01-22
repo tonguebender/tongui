@@ -6,10 +6,11 @@ import Navigation exposing (Location)
 import RemoteData exposing (WebData)
 
 
-
 type Msg
     = OnFetchTongues (WebData (List TongueId))
     | OnLocationChange Location
+    | OnInputId String
+    | OnInputDesc String
 
 
 {--
