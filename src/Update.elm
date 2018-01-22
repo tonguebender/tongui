@@ -4,7 +4,6 @@ import Commands exposing (fetchTongues, postTongueEntity)
 import Models exposing (Model)
 import Msgs exposing (Msg)
 import Routing exposing (parseLocation)
-import RemoteData
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -73,4 +72,23 @@ update msg model =
                 ( model, postTongueEntity tongue tongueEntity )
 
         Msgs.OnTongueEntitySave a ->
+            ( model, Cmd.none )
+
+        Msgs.OnCourseTaskAdd a ->
+            let
+                form =
+                    model.courseForm
+
+                taskList =
+                    model.courseForm.content
+
+                newList =
+                    List.append taskList [ (Models.CourseTask "" "" "") ]
+
+                newForm =
+                    { form | content = newList }
+            in
+                ( { model | courseForm = newForm }, Cmd.none )
+
+        Msgs.OnCourseAdd a ->
             ( model, Cmd.none )

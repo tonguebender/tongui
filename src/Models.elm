@@ -7,6 +7,7 @@ type alias Model =
     { route : Route
     , tongues : WebData (List TongueId)
     , tongueForm : Maybe TongueForm
+    , courseForm : CourseForm
     }
 
 
@@ -15,6 +16,7 @@ initialModel route =
     { route = route
     , tongues = RemoteData.NotAsked
     , tongueForm = Nothing
+    , courseForm = CourseForm "" "" "" [ CourseTask "" "" "" ]
     }
 
 
@@ -40,6 +42,21 @@ type alias TongueForm =
 type alias TongueEntity =
     { id : String
     , desc : String
+    }
+
+
+type alias CourseForm =
+    { idValue : String
+    , descValue : String
+    , tags : String
+    , content : List CourseTask
+    }
+
+
+type alias CourseTask =
+    { id : String
+    , tongue : String
+    , taskType : String
     }
 
 

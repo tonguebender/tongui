@@ -4,10 +4,9 @@ import Commands exposing (fetchTongues)
 import Models exposing (Model, initialModel)
 import Msgs exposing (Msg)
 import Navigation exposing (Location)
-import Routing
 import Update exposing (update)
 import View exposing (view)
-import Debug exposing (log)
+import Routing
 
 
 init : Location -> ( Model, Cmd Msg )

@@ -13,6 +13,8 @@ type Msg
     | OnInputDesc String
     | OnAdd String
     | OnTongueEntitySave (Result Http.Error Models.TongueEntity)
+    | OnCourseTaskAdd String
+    | OnCourseAdd String
 
 
 

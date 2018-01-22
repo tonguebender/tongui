@@ -1,9 +1,9 @@
 module View exposing (..)
 
 import Html exposing (Html, div, text, ul, li, a, form, input, textarea, button)
-import Html.Attributes exposing (class, href, name)
-import Html.Events exposing (onInput, onWithOptions)
-import Models exposing (..)
+import Html.Attributes exposing (class, href, name, type_, value)
+import Html.Events exposing (onInput, onClick, onWithOptions)
+import Models exposing (Model)
 import Msgs exposing (Msg)
 import Json.Decode as Decode
 import RemoteData
@@ -28,7 +28,7 @@ page model =
             tongueForm id
 
         Models.CoursesRoute ->
-            notFoundView
+            courseForm model.courseForm
 
         Models.CourseRoute id ->
             notFoundView
@@ -45,7 +45,7 @@ mainMenu =
         ]
 
 
-tonguesList : RemoteData.WebData (List TongueId) -> Html msg
+tonguesList : RemoteData.WebData (List Models.TongueId) -> Html msg
 tonguesList tongues =
     case tongues of
         RemoteData.NotAsked ->
@@ -85,6 +85,56 @@ tongueForm id =
                     (Decode.succeed (Msgs.OnAdd id))
                 ]
                 [ text "add" ]
+            ]
+        ]
+
+
+courseForm : Models.CourseForm -> Html Msg
+courseForm formData =
+    form []
+        [ div []
+            [ text "id"
+            , input [ name "id", onInput Msgs.OnInputId ] []
+            ]
+        , div []
+            [ text "description"
+            , textarea [ name "desc", onInput Msgs.OnInputDesc ] []
+            ]
+        , div []
+            [ text "tags"
+            , input [ name "tags", onInput Msgs.OnInputDesc ] []
+            ]
+        , div []
+            [ text "Content"
+            , div []
+                (List.map (\t -> courseTaskItem t) formData.content)
+            , button [ type_ "button", onClick (Msgs.OnCourseTaskAdd "add") ]
+                [ text "+" ]
+            ]
+        , div []
+            [ button
+                [ onWithOptions
+                    "click"
+                    { stopPropagation = True
+                    , preventDefault = True
+                    }
+                    (Decode.succeed (Msgs.OnCourseAdd "add"))
+                , type_ "button"
+                ]
+                [ text "add" ]
+            ]
+        ]
+
+
+courseTaskItem task =
+    div []
+        [ div []
+            [ text "tongue"
+            , input [ value task.tongue ] []
+            ]
+        , div []
+            [ text "id"
+            , input [] []
             ]
         ]
 
