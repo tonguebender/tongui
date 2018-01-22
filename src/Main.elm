@@ -19,6 +19,7 @@ init location =
         case currentRoute of
             Models.TonguesRoute ->
                 ( initialModel currentRoute, fetchTongues )
+
             _ ->
                 ( initialModel currentRoute, Cmd.none )
 
@@ -26,6 +27,7 @@ init location =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
+
 
 
 -- MAIN

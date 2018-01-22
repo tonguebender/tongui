@@ -8,7 +8,9 @@ import Msgs exposing (Msg)
 import Models
 import RemoteData
 
+
 -- tongues
+
 
 fetchTongues : Cmd Msg
 fetchTongues =
@@ -16,16 +18,20 @@ fetchTongues =
         |> RemoteData.sendRequest
         |> Cmd.map Msgs.OnFetchTongues
 
+
 fetchTonguesUrl : String
 fetchTonguesUrl =
     "http://localhost:4000/tongues"
+
 
 tonguesDecoder : Decode.Decoder (List Models.TongueId)
 tonguesDecoder =
     Decode.list Decode.string
 
 
+
 -- tongueEntities
+
 
 postTongueEntityRequest : String -> Models.TongueEntity -> Http.Request Models.TongueEntity
 postTongueEntityRequest tongue tongueEntity =
@@ -39,20 +45,24 @@ postTongueEntityRequest tongue tongueEntity =
         , withCredentials = False
         }
 
+
 postTongueEntity : String -> Models.TongueEntity -> Cmd Msg
 postTongueEntity tongue tongueEntity =
     postTongueEntityRequest tongue tongueEntity
         |> Http.send Msgs.OnTongueEntitySave
 
+
 tongueEntityUrl : String -> String
 tongueEntityUrl id =
     "http://localhost:4000/tongues" ++ "/" ++ id
+
 
 tongueEntityDecoder : Decode.Decoder Models.TongueEntity
 tongueEntityDecoder =
     decode Models.TongueEntity
         |> required "id" Decode.string
         |> required "description" Decode.string
+
 
 tongueEntityEncoder : Models.TongueEntity -> Encode.Value
 tongueEntityEncoder tongueEntity =

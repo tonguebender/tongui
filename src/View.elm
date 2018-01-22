@@ -36,14 +36,16 @@ page model =
         Models.NotFoundRoute ->
             notFoundView
 
-mainMenu: Html msg
+
+mainMenu : Html msg
 mainMenu =
     ul []
         [ li [] [ simpleLink "tongues" "tongues" ]
         , li [] [ simpleLink "courses" "courses" ]
         ]
 
-tonguesList: RemoteData.WebData (List TongueId) -> Html msg
+
+tonguesList : RemoteData.WebData (List TongueId) -> Html msg
 tonguesList tongues =
     case tongues of
         RemoteData.NotAsked ->
@@ -58,10 +60,11 @@ tonguesList tongues =
                 , div [] (List.map (\t -> simpleLink ("tongue/" ++ t) t) data)
                 ]
 
-        RemoteData.Failure error->
+        RemoteData.Failure error ->
             text ("Error" ++ toString error)
 
-tongueForm: String -> Html Msg
+
+tongueForm : String -> Html Msg
 tongueForm id =
     form []
         [ div []
@@ -75,20 +78,21 @@ tongueForm id =
         , div []
             [ button
                 [ onWithOptions
-                      "click"
-                      { stopPropagation = True
-                      , preventDefault = True
-                      }
-                      (Decode.succeed (Msgs.OnAdd id))
+                    "click"
+                    { stopPropagation = True
+                    , preventDefault = True
+                    }
+                    (Decode.succeed (Msgs.OnAdd id))
                 ]
                 [ text "add" ]
             ]
         ]
 
 
-simpleLink: String -> String -> Html msg
+simpleLink : String -> String -> Html msg
 simpleLink hrefVal textVal =
     a [ href ("#" ++ hrefVal) ] [ text textVal ]
+
 
 notFoundView : Html msg
 notFoundView =

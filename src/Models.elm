@@ -17,25 +17,31 @@ initialModel route =
     , tongueForm = Nothing
     }
 
+
 type alias Tongue =
-    { id: TongueId
+    { id : TongueId
     }
+
 
 type alias TongueId =
     String
 
+
 type alias CourseId =
     String
+
 
 type alias TongueForm =
     { idValue : String
     , descValue : String
     }
 
+
 type alias TongueEntity =
     { id : String
     , desc : String
     }
+
 
 type Route
     = HomeRoute
