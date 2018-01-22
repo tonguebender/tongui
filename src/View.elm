@@ -2,9 +2,10 @@ module View exposing (..)
 
 import Html exposing (Html, div, text, ul, li, a, form, input, textarea, button)
 import Html.Attributes exposing (class, href, name)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onWithOptions)
 import Models exposing (..)
 import Msgs exposing (Msg)
+import Json.Decode as Decode
 import RemoteData
 
 
@@ -72,7 +73,15 @@ tongueForm id =
             , textarea [ name "definitions", onInput Msgs.OnInputDesc ] []
             ]
         , div []
-            [ button [] [ text "add" ]
+            [ button
+                [ onWithOptions
+                      "click"
+                      { stopPropagation = True
+                      , preventDefault = True
+                      }
+                      (Decode.succeed (Msgs.OnAdd id))
+                ]
+                [ text "add" ]
             ]
         ]
 

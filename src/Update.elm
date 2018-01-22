@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import Commands exposing (fetchTongues)
+import Commands exposing (fetchTongues, postTongueEntity)
 import Models exposing (Model)
 import Msgs exposing (Msg)
 import Routing exposing (parseLocation)
@@ -44,3 +44,16 @@ update msg model =
                 newFormValue = { formValue | descValue = descValue }
             in
                 ( { model | tongueForm = Just newFormValue }, Cmd.none )
+
+        Msgs.OnAdd tongue ->
+            let
+                form = model.tongueForm
+                tE =
+                    case form of
+                        Nothing -> Models.TongueEntity "" ""
+                        Just value -> Models.TongueEntity value.idValue value.descValue
+            in
+                ( model, postTongueEntity tongue tE )
+
+        Msgs.OnTongueEntitySave a ->
+            ( model, Cmd.none )

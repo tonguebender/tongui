@@ -11,6 +11,8 @@ type Msg
     | OnLocationChange Location
     | OnInputId String
     | OnInputDesc String
+    | OnAdd String
+    | OnTongueEntitySave (Result Http.Error Models.TongueEntity)
 
 
 {--

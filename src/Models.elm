@@ -32,6 +32,11 @@ type alias TongueForm =
     , descValue : String
     }
 
+type alias TongueEntity =
+    { id : String
+    , desc : String
+    }
+
 type Route
     = HomeRoute
     | TonguesRoute
