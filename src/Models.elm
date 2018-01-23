@@ -68,6 +68,11 @@ type alias CourseTask =
     , taskType : String
     }
 
+type alias CourseObj =
+    { id : String
+    , description : String
+    }
+
 
 
 -- helpers

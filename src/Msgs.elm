@@ -17,6 +17,7 @@ type Msg
     | OnInputCourseTaskField Int String String
     | OnCourseTaskAdd String
     | OnCourseAdd String
+    | OnCourseSave (Result Http.Error Models.CourseObj)
 
 
 

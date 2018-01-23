@@ -73,3 +73,60 @@ tongueEntityEncoder tongueEntity =
             ]
     in
         Encode.object attributes
+
+
+
+-- courses
+
+
+postCourseRequest : Models.CourseForm -> Http.Request Models.CourseObj
+postCourseRequest courseData =
+    Http.request
+        { body = courseEncoder courseData |> Http.jsonBody
+        , expect = Http.expectJson courseDecoder
+        , headers = []
+        , method = "POST"
+        , timeout = Nothing
+        , url = courseUrl
+        , withCredentials = False
+        }
+
+
+postCourse : Models.CourseForm -> Cmd Msg
+postCourse courseData =
+    postCourseRequest courseData
+        |> Http.send Msgs.OnCourseSave
+
+
+courseUrl =
+    "http://localhost:4000/courses"
+
+
+courseDecoder : Decode.Decoder Models.CourseObj
+courseDecoder =
+    decode Models.CourseObj
+        |> required "id" Decode.string
+        |> required "description" Decode.string
+
+
+courseEncoder : Models.CourseForm -> Encode.Value
+courseEncoder courseData =
+    let
+        attributes =
+            [ ( "id", Encode.string courseData.id )
+            , ( "description", Encode.string courseData.desc )
+            , ( "tags", Encode.string courseData.tags )
+            , ( "content", Encode.list (List.map taskEncoder courseData.content) )
+            ]
+    in
+        Encode.object attributes
+
+taskEncoder task =
+    let
+        attributes =
+            [ ( "id", Encode.string task.id )
+            , ( "tongue", Encode.string task.tongue )
+            , ( "type", Encode.string task.taskType )
+            ]
+    in
+        Encode.object attributes

@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import Commands exposing (fetchTongues, postTongueEntity)
+import Commands exposing (fetchTongues, postTongueEntity, postCourse)
 import Models exposing (Model)
 import Msgs exposing (Msg)
 import Routing exposing (parseLocation)
@@ -98,4 +98,7 @@ update msg model =
                 ( { model | courseForm = newForm }, Cmd.none )
 
         Msgs.OnCourseAdd a ->
+                ( model, postCourse model.courseForm )
+
+        Msgs.OnCourseSave a ->
             ( model, Cmd.none )
