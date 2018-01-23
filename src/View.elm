@@ -94,20 +94,20 @@ courseForm formData =
     form []
         [ div []
             [ text "id"
-            , input [ name "id", onInput Msgs.OnInputId ] []
+            , input [ name "id", onInput (Msgs.OnInputCourseField "id") ] []
             ]
         , div []
             [ text "description"
-            , textarea [ name "desc", onInput Msgs.OnInputDesc ] []
+            , textarea [ name "desc", onInput (Msgs.OnInputCourseField "desc") ] []
             ]
         , div []
             [ text "tags"
-            , input [ name "tags", onInput Msgs.OnInputDesc ] []
+            , input [ name "tags", onInput (Msgs.OnInputCourseField "tags") ] []
             ]
         , div []
             [ text "Content"
             , div []
-                (List.map (\t -> courseTaskItem t) formData.content)
+                (List.indexedMap (\i t -> courseTaskItem i t) formData.content)
             , button [ type_ "button", onClick (Msgs.OnCourseTaskAdd "add") ]
                 [ text "+" ]
             ]
@@ -126,15 +126,15 @@ courseForm formData =
         ]
 
 
-courseTaskItem task =
+courseTaskItem index task =
     div []
         [ div []
             [ text "tongue"
-            , input [ value task.tongue ] []
+            , input [ value task.tongue, onInput (Msgs.OnInputCourseTaskField index "tongue") ] []
             ]
         , div []
             [ text "id"
-            , input [] []
+            , input [ onInput (Msgs.OnInputCourseTaskField index "id") ] []
             ]
         ]
 

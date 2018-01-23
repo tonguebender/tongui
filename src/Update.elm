@@ -25,7 +25,7 @@ update msg model =
                     _ ->
                         ( { model | route = newRoute }, Cmd.none )
 
-        -- form inputs
+        -- tongue form inputs
         Msgs.OnInputId idValue ->
             let
                 formValue =
@@ -73,6 +73,13 @@ update msg model =
 
         Msgs.OnTongueEntitySave a ->
             ( model, Cmd.none )
+
+        -- courses form
+        Msgs.OnInputCourseField name idValue ->
+            ( Models.updateCourseFormField name idValue model, Cmd.none )
+
+        Msgs.OnInputCourseTaskField index name idValue ->
+            ( Models.updateCourseTaskFormField index name idValue model, Cmd.none )
 
         Msgs.OnCourseTaskAdd a ->
             let

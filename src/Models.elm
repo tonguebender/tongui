@@ -3,6 +3,15 @@ module Models exposing (..)
 import RemoteData exposing (WebData)
 
 
+type Route
+    = HomeRoute
+    | TonguesRoute
+    | TongueRoute TongueId
+    | CoursesRoute
+    | CourseRoute CourseId
+    | NotFoundRoute
+
+
 type alias Model =
     { route : Route
     , tongues : WebData (List TongueId)
@@ -46,8 +55,8 @@ type alias TongueEntity =
 
 
 type alias CourseForm =
-    { idValue : String
-    , descValue : String
+    { id : String
+    , desc : String
     , tags : String
     , content : List CourseTask
     }
@@ -60,10 +69,63 @@ type alias CourseTask =
     }
 
 
-type Route
-    = HomeRoute
-    | TonguesRoute
-    | TongueRoute TongueId
-    | CoursesRoute
-    | CourseRoute CourseId
-    | NotFoundRoute
+
+-- helpers
+
+
+updateCourseFormField : String -> String -> Model -> Model
+updateCourseFormField name value model =
+    let
+        formValue =
+            model.courseForm
+
+        newFormValue =
+            case name of
+                "id" ->
+                    { formValue | id = value }
+
+                "desc" ->
+                    { formValue | desc = value }
+
+                "tags" ->
+                    { formValue | tags = value }
+
+                _ ->
+                    formValue
+    in
+        { model | courseForm = newFormValue }
+
+
+updateCourseTaskFormField : Int -> String -> String -> Model -> Model
+updateCourseTaskFormField indexToUpdate name value model =
+    let
+        fromValue =
+            model.courseForm
+
+        tasks =
+            model.courseForm.content
+
+        changeTaskValue task =
+            case name of
+                "id" ->
+                    { task | id = value }
+
+                "tongue" ->
+                    { task | tongue = value }
+
+                _ ->
+                    task
+
+        changeValue index task =
+            if index == indexToUpdate then
+                changeTaskValue task
+            else
+                task
+
+        newTasks =
+            List.indexedMap changeValue tasks
+
+        newFormValue =
+            { fromValue | content = newTasks }
+    in
+        { model | courseForm = newFormValue }
