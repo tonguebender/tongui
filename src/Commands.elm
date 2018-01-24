@@ -87,7 +87,7 @@ postCourseRequest courseData =
         , headers = []
         , method = "POST"
         , timeout = Nothing
-        , url = courseUrl
+        , url = courseUrl courseData.id
         , withCredentials = False
         }
 
@@ -98,8 +98,8 @@ postCourse courseData =
         |> Http.send Msgs.OnCourseSave
 
 
-courseUrl =
-    "http://localhost:4000/courses"
+courseUrl courseId =
+    "http://localhost:9090/course/" ++ courseId
 
 
 courseDecoder : Decode.Decoder Models.CourseObj
