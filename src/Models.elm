@@ -12,9 +12,20 @@ type Route
     | NotFoundRoute
 
 
+getTongue : Route -> TongueId
+getTongue route =
+    case route of
+        TongueRoute name ->
+            name
+
+        _ ->
+            ""
+
+
 type alias Model =
     { route : Route
     , tongues : WebData (List TongueId)
+    , tongueEntities : WebData (List TongueEntityId)
     , tongueForm : Maybe TongueForm
     , courseForm : CourseForm
     }
@@ -24,6 +35,7 @@ initialModel : Route -> Model
 initialModel route =
     { route = route
     , tongues = RemoteData.NotAsked
+    , tongueEntities = RemoteData.NotAsked
     , tongueForm = Nothing
     , courseForm = CourseForm "" "" "" [ CourseTask "" "" "" ]
     }
@@ -35,6 +47,10 @@ type alias Tongue =
 
 
 type alias TongueId =
+    String
+
+
+type alias TongueEntityId =
     String
 
 
@@ -67,6 +83,7 @@ type alias CourseTask =
     , tongue : String
     , taskType : String
     }
+
 
 type alias CourseObj =
     { id : String

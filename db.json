@@ -1,6 +1,8 @@
 {
-  "tongues": [
-    "en-gb-dict",
-    "en-grammar"
-  ]
+  "tongues": {
+    "users": [
+      "en-gb-dict",
+      "en-grammar"
+    ]
+  }
 }

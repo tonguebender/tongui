@@ -1,13 +1,14 @@
 module Msgs exposing (..)
 
 import Http
-import Models exposing (Model, TongueId)
+import Models exposing (Model)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)
 
 
 type Msg
-    = OnFetchTongues (WebData (List TongueId))
+    = OnFetchTongues (WebData (List Models.TongueId))
+    | OnFetchTongueEntities (WebData (List Models.TongueEntityId))
     | OnLocationChange Location
     | OnInputId String
     | OnInputDesc String
@@ -18,13 +19,3 @@ type Msg
     | OnCourseTaskAdd String
     | OnCourseAdd String
     | OnCourseSave (Result Http.Error Models.CourseObj)
-
-
-
-{--
-type Msg
-    = OnFetchPlayers (WebData (List Player))
-    | OnLocationChange Location
-    | ChangeLevel Player Int
-    | OnPlayerSave (Result Http.Error Player)
---}

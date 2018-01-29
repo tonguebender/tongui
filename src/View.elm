@@ -25,7 +25,7 @@ page model =
             div [] [ tonguesList model.tongues ]
 
         Models.TongueRoute id ->
-            tongueForm id
+            tonguePage id model.tongueEntities
 
         Models.CoursesRoute ->
             courseForm model.courseForm
@@ -56,12 +56,20 @@ tonguesList tongues =
 
         RemoteData.Success data ->
             div []
-                [ text "Data"
-                , div [] (List.map (\t -> simpleLink ("tongue/" ++ t) t) data)
+                [ text "Tongues"
+                , ul [] (List.map (\t -> li [] [ (simpleLink ("tongue/" ++ t) t) ]) data)
                 ]
 
         RemoteData.Failure error ->
             text ("Error" ++ toString error)
+
+
+tonguePage : String -> RemoteData.WebData (List Models.TongueEntityId) -> Html Msg
+tonguePage id entities =
+    div []
+        [ tongueForm id
+        , tongueEntitiesList id entities
+        ]
 
 
 tongueForm : String -> Html Msg
@@ -86,6 +94,27 @@ tongueForm id =
                 ]
                 [ text "add" ]
             ]
+        ]
+
+
+tongueEntitiesList id entities =
+    div []
+        [ text "List"
+        , case entities of
+            RemoteData.NotAsked ->
+                text "?"
+
+            RemoteData.Loading ->
+                text "Loading"
+
+            RemoteData.Success data ->
+                div []
+                    [ text "Entities"
+                    , ul [] (List.map (\t -> li [] [ text t ]) data)
+                    ]
+
+            RemoteData.Failure error ->
+                text ("Error" ++ toString error)
         ]
 
 

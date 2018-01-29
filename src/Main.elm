@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Commands exposing (fetchTongues)
+import Commands exposing (fetchTongues, fetchTongueEntities)
 import Models exposing (Model, initialModel)
 import Msgs exposing (Msg)
 import Navigation exposing (Location)
@@ -18,6 +18,9 @@ init location =
         case currentRoute of
             Models.TonguesRoute ->
                 ( initialModel currentRoute, fetchTongues )
+
+            Models.TongueRoute tongue ->
+                ( initialModel currentRoute, fetchTongueEntities tongue )
 
             _ ->
                 ( initialModel currentRoute, Cmd.none )

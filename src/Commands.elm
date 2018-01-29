@@ -19,14 +19,31 @@ fetchTongues =
         |> Cmd.map Msgs.OnFetchTongues
 
 
+fetchTongueEntities : String -> Cmd Msg
+fetchTongueEntities tongue =
+    Http.get (fetchTongueEntitiesUrl tongue) tongueEntitiesDecoder
+        |> RemoteData.sendRequest
+        |> Cmd.map Msgs.OnFetchTongueEntities
+
+
 fetchTonguesUrl : String
 fetchTonguesUrl =
-    "http://localhost:4000/tongues"
+    "http://localhost:9090/tongues"
+
+
+fetchTongueEntitiesUrl : String -> String
+fetchTongueEntitiesUrl tongue =
+    "http://localhost:9090/tongue/" ++ tongue
 
 
 tonguesDecoder : Decode.Decoder (List Models.TongueId)
 tonguesDecoder =
-    Decode.list Decode.string
+    Decode.at [ "data" ] (Decode.list Decode.string)
+
+
+tongueEntitiesDecoder : Decode.Decoder (List String)
+tongueEntitiesDecoder =
+    Decode.at [ "data" ] (Decode.list Decode.string)
 
 
 
@@ -41,7 +58,7 @@ postTongueEntityRequest tongue tongueEntity =
         , headers = []
         , method = "POST"
         , timeout = Nothing
-        , url = tongueEntityUrl tongue
+        , url = tongueEntityUrl tongue tongueEntity.id
         , withCredentials = False
         }
 
@@ -52,9 +69,9 @@ postTongueEntity tongue tongueEntity =
         |> Http.send Msgs.OnTongueEntitySave
 
 
-tongueEntityUrl : String -> String
-tongueEntityUrl id =
-    "http://localhost:4000/tongues" ++ "/" ++ id
+tongueEntityUrl : String -> String -> String
+tongueEntityUrl tongue id =
+    "http://localhost:9090/tongue" ++ "/" ++ tongue ++ "/" ++ id
 
 
 tongueEntityDecoder : Decode.Decoder Models.TongueEntity
@@ -120,6 +137,7 @@ courseEncoder courseData =
             ]
     in
         Encode.object attributes
+
 
 taskEncoder task =
     let
